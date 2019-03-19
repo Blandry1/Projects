@@ -15,29 +15,38 @@ class Graph():
   
     # A utility function to test & print the constructed MST stored in parent[] 
     def testMST(self, parent, Rg, Cg): 
-        print ("Edge \tWeight")
+        print ("\nEdge \tWeight")
         R_sys = 1
         C_sys = 0    
+        C_left = Cg
+        testsPassed = [False] * 3
 
         for i in range(1,self.V): 
             print (parent[i],"-",i,"\t",abs(self.graph[i][ parent[i] ] )) # used abs to turn printed weight positive
             
             R_sys *= abs(R[i][parent[i]])
             C_sys += C[i][parent[i]]
+            C_left -= C[i][parent[i]]
 
-        print("R_sys:", R_sys, "\n", "C_sys:", C_sys)
+        print( "R_sys:", R_sys)
+        print( "C_sys:", C_sys)
+        print( "Cost_left:", C_left)
         if (R_sys > Rg):
             print("test1 passed")
+            testsPassed[0] = True
         else:
             print("test1 failed")
         if(R_sys > Rg and C_sys <= Cg):
             print("test2 passed")
+            testsPassed[1] = True
         else:
             print("test2 failed")
         if(C_sys <= Cg):
             print("test3 passed")
+            testsPassed[2] = True
         else:
             print("test3 failed")
+        #print(testsPassed)
 
     # A utility function to find the vertex with  
     # minimum distance value, from the set of vertices  
@@ -122,8 +131,10 @@ max_R = g.primMST()
 h.graph = C # find min cost
 min_C = h.primMST()
 
-g.testMST(max_R, Rg, Cg) 
+g.testMST(max_R, Rg, Cg)
 h.testMST(min_C, Rg, Cg)
+# write logic to pick the object (either g or h) that has all 3 tests passing
+    # for now, use min_C
+# extend graph, to have max reliability, with the leftover cost (C_left)
 
 
-# extend graph, to have max reliability, with the leftover cost 
