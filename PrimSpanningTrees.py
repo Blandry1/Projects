@@ -16,37 +16,29 @@ class Graph():
     # A utility function to test & print the constructed MST stored in parent[] 
     def testMST(self, parent, Rg, Cg): 
         print ("\nEdge \tWeight")
-        R_sys = 1
-        C_sys = 0    
-        C_left = Cg
-        testsPassed = [False] * 3
+        print("parent:", parent)
+        self.R_sys = 1
+        self.C_sys = 0    
+        self.C_left = Cg
+        self.testsPassed = [False] * 3
 
         for i in range(1,self.V): 
             print (parent[i],"-",i,"\t",abs(self.graph[i][ parent[i] ] )) # used abs to turn printed weight positive
-            
-            R_sys *= abs(R[i][parent[i]])
-            C_sys += C[i][parent[i]]
-            C_left -= C[i][parent[i]]
+            self.R_sys *= abs(R[i][parent[i]])
+            self.C_sys += C[i][parent[i]]
+            self.C_left -= C[i][parent[i]]
 
-        print( "R_sys:", R_sys)
-        print( "C_sys:", C_sys)
-        print( "Cost_left:", C_left)
-        if (R_sys > Rg):
-            print("test1 passed")
-            testsPassed[0] = True
-        else:
-            print("test1 failed")
-        if(R_sys > Rg and C_sys <= Cg):
-            print("test2 passed")
-            testsPassed[1] = True
-        else:
-            print("test2 failed")
-        if(C_sys <= Cg):
-            print("test3 passed")
-            testsPassed[2] = True
-        else:
-            print("test3 failed")
-        #print(testsPassed)
+        print( "R_sys:", self.R_sys)
+        print( "C_sys:", self.C_sys)
+        print( "Cost_left:", self.C_left)
+        if (self.R_sys > Rg):
+            self.testsPassed[0] = True
+        if(self.R_sys > Rg and self.C_sys <= Cg):
+            self.testsPassed[1] = True
+        if(self.C_sys <= Cg):
+            self.testsPassed[2] = True
+
+        return self.testsPassed
 
     # A utility function to find the vertex with  
     # minimum distance value, from the set of vertices  
@@ -98,6 +90,7 @@ class Graph():
                 if self.graph[u][v] != 0 and mstSet[v] == False and key[v] > self.graph[u][v]: 
                         key[v] = self.graph[u][v] 
                         parent[v] = u
+            
         return parent
 
         #self.testMST(parent, 0.7, 100) # calculate reliability here
@@ -130,11 +123,42 @@ max_R = g.primMST()
 
 h.graph = C # find min cost
 min_C = h.primMST()
+#print(min_C)
 
 g.testMST(max_R, Rg, Cg)
 h.testMST(min_C, Rg, Cg)
+#print("parent:", min_C[i],"child", [i])
 # write logic to pick the object (either g or h) that has all 3 tests passing
-    # for now, use min_C
-# extend graph, to have max reliability, with the leftover cost (C_left)
+    # for now, use min_C & use h object
+# Extend graph, to have max reliability, with the leftover cost (C_left)
+
+def extendGraph(n):
+    for i in range(n):
+        for j in range(n):
+            if(i>j):
+                """
+                TODO: figure out how to obtain full vertices from parent and child. Add a node to it. 
+                TODO: Set G_new. Store vertices and R_ext. Pick system with max reliabilty.
+                Vertex is currently set by looping i from 0 to n, in h.parent[i]
+                Also, the i references the adjacency matrix. So extending parent without extending adjency matrix causes errors. 
+                """
+                # Add node at [i][j] to h-object
+                # min_C.append(R[i][j])
+
+                # G_new is when both vertices of the added edge, becomes the same node. e.g. 5=4, 3=2
+                # value = parent or child vertex
+
+                # if (value = j):
+                #    value = i
+                # Calculate reliabilty of system
+                # R_ext = R[i][j] * G_new + (1-R[i][j] * h.R_sys)
 
 
+                if(all(True for test in h.testsPassed)):
+                    "something2"
+                    # store instance of object, i.e. min_C. Vertices and R_ext
+                    
+    # pick system/system with max Reliability
+    return "blank"
+
+extendGraph(n)
